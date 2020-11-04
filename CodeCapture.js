@@ -42,7 +42,7 @@ export default function CodeCapture({navigation}) {
           return true
       }
       else{
-        alert('This isn\'t one of ours but if you want to go, we\'ll  send you but we will do it outside the app' );
+        alert('The QR Code is not Alana Enabled. Would you like to open it in your browser?' );
         return false
       }
 

@@ -9,7 +9,7 @@ export default function PreviousScans({navigation}){
         
         const renderItem = ({ item }) => (
           <TouchableOpacity
-            onPress = {()=>{setScans(UserData.PreviousScans.splice(UserData.PreviousScans.indexOf(item.id),1)) }}
+            onPress = {()=>{setScans(UserData.PreviousScans.splice(UserData.PreviousScans.indexOf(item),1)) }}
             onLongPress = {()=>{console.log(scans)}}
             style = {{backgroundColor: 'yellow', justifyContent: 'center', alignItems:'center', flex:1, margin: 10, height: 80,}}
             >
