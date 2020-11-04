@@ -2,6 +2,7 @@ import React, { useState, useEffect } from 'react';
 import ReactDOM from 'react-dom';
 import { Text, View, StyleSheet, Button,SafeAreaView, Linking} from 'react-native';
 import { BarCodeScanner } from 'expo-barcode-scanner';
+import * as WebBrowser from 'expo-web-browser';
 
 import UserData from "../UserData.json";
 
@@ -9,6 +10,8 @@ import UserData from "../UserData.json";
 export default function CodeCapture({navigation}) {
   const [hasPermission, setHasPermission] = useState(null);
   const [scanned, setScanned] = useState(false);
+  //const [url, setUrl] = useState("https://www.google.com");
+
 
   useEffect(() => {
     (async () => {
@@ -17,8 +20,18 @@ export default function CodeCapture({navigation}) {
     })();
   }, []);
 
-  const handleBarCodeScanned = ({ type, data }) => {
+  openWebPage = async (url) => {
+    if (!url) throw 'MISSED_PARAMS';
 
+    try {
+        return await WebBrowser.openBrowserAsync(url);
+    }
+    catch (e) {
+        console.log('Error', e);
+    }
+  };
+  const handleBarCodeScanned = ({ type, data }) => {
+    console.log(type);
     setScanned(true);
     alert(`Scanned`);
     
@@ -31,10 +44,16 @@ export default function CodeCapture({navigation}) {
       UserData.UPC_List.push(data)
      
     }
-    if(!(isWhiteListed({type})))
+    if(isWhiteListed({type})&& data.search("alanaenabled") != -1)
     {
 
+      openWebPage(data)
+
+    }
+    else{
+
       alert('not in list....open in browser instead?');
+
 
     }
      
@@ -61,7 +80,7 @@ export default function CodeCapture({navigation}) {
       }
 
   }
- 
+
   return (
     <SafeAreaView
       style={{
@@ -75,9 +94,12 @@ export default function CodeCapture({navigation}) {
         style={StyleSheet.absoluteFillObject}
       />
   
-      {scanned && <Button title={'Tap to Scan Again'} onPress={() => setScanned(false)} />}
-      {UserData.PreviousScans.length >= 1? <Button title = {'Previous Scans'} onPress = {()=> navigation.navigate('PreviousScans')}/>: <View></View>}
-          
+      {scanned && <Button  title={'Tap to Scan Again'} onPress={() => setScanned(false)} />}
+      <Button title = {'Previous Scans'} onPress = {()=> navigation.navigate('PreviousScans')}/>
+      
+      
+      
+      
     </SafeAreaView>
   );
 
