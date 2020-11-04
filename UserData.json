@@ -1,6 +1,16 @@
 {
     "UPC_List":[],
     "PreviousScans":[],
-    "AvailabeCodes":["aztec","codabar", "code39", "code93","code128","datamatrix", 
-        "ean13", "ean8", "itf14", "rss14", "rssexpanded", "upc_a", "upc_e", "upc_ean", "qr"]
+    "AvailabeCodes":[
+        "org.iso.Aztec",
+        "org.iso.Code128",
+        "org.iso.Code39",     
+        "com.intermec.Code93",
+        "org.iso.DataMatrix",
+        "org.gs1.EAN-13",
+        "org.gs1.EAN-8",
+        "org.gs1.ITF14",
+        "org.iso.PDF417",
+        "org.iso.QRCode",
+        "org.gs1.UPC-E"]
 }
