@@ -1,20 +1,17 @@
 import React, {useState} from 'react';
 import {SafeAreaView,Text, View, FlatList, TouchableOpacity, StyleSheet} from 'react-native';
 
-
-import UserData from "../UserData.json";
+import OpenURLButton from "./Components/OpenURLButton.js";
+import UserData from "./UserData.json";
 
 export default function PreviousScans({navigation}){
         const [scans, setScans] = useState(UserData.PreviousScans);
         
         const renderItem = ({ item }) => (
-          <TouchableOpacity
-            onPress = {()=>{setScans(UserData.PreviousScans.splice(UserData.PreviousScans.indexOf(item),1)) }}
-            onLongPress = {()=>{console.log(scans)}}
-            style = {{backgroundColor: 'yellow', justifyContent: 'center', alignItems:'center', flex:1, margin: 10, height: 80,}}
-            >
-              <Text >{item.title}</Text>
-          </TouchableOpacity>
+          <OpenURLButton 
+            url = {item.title}
+            onLongPress = {()=>{setScans(UserData.PreviousScans.splice(UserData.PreviousScans.indexOf(item),1), console.log(scans))}}
+            />
         );
       
         return (
@@ -44,5 +41,3 @@ export default function PreviousScans({navigation}){
           fontSize: 32,
         },
       });
-      
-     
