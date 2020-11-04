@@ -10,7 +10,7 @@ export default function PreviousScans({navigation}){
         const renderItem = ({ item }) => (
           <OpenURLButton 
             url = {item.title}
-            onLongPress = {()=>{setScans(UserData.PreviousScans.splice(UserData.PreviousScans.indexOf(item),1), console.log(scans))}}
+            onLongPress = {()=>{setScans(UserData.PreviousScans.splice(UserData.PreviousScans.indexOf(item),1))}}
             />
         );
       
