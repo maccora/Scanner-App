@@ -2,7 +2,6 @@ import React, { useState, useEffect } from 'react';
 import ReactDOM from 'react-dom';
 import { Text, View, StyleSheet, Button,SafeAreaView } from 'react-native';
 import { BarCodeScanner } from 'expo-barcode-scanner';
-import components from "./components.js";
 
 import UserData from "../UserData.json";
 
@@ -21,6 +20,19 @@ export default function CodeCapture({navigation}) {
   const handleBarCodeScanned = ({ type, data }) => {
     setScanned(true);
     alert(`Scanned`);
+    if(isWhiteListed({type}))
+    {
+
+    }
+    else{
+
+      
+    }
+    
+    
+    
+    
+   
     UserData.PreviousScans.push({"title": data.toString(), "id": UserData.PreviousScans.length.toString()}); // Assign ID  to every Scan to allow for deletion.
     
     
@@ -34,16 +46,16 @@ export default function CodeCapture({navigation}) {
     return <Text>No access to camera</Text>;
   }
 
-  const isWhiteListed = ({type,data}) => {
+  const isWhiteListed = ({type}) => {
 
-      const exists =  UserData.AvailabeCodes.lastIndexOf(type);
+      const exists = UserData.AvailabeCodes.lastIndexOf(type);
       if(exists != -1)
       {
           return true
       }
       else{
-        alert('The QR Code is not Alana Enabled. Would you like to open it in your browser?' );
         return false
+        
       }
 
   }
@@ -60,6 +72,7 @@ export default function CodeCapture({navigation}) {
       }}>
       <BarCodeScanner
         onBarCodeScanned={scanned ? undefined : handleBarCodeScanned}
+      
         style={StyleSheet.absoluteFillObject}
       />
   
@@ -73,3 +86,4 @@ export default function CodeCapture({navigation}) {
   );
 
  }
+
