@@ -1,6 +1,6 @@
 import React, { useState, useEffect } from 'react';
 import ReactDOM from 'react-dom';
-import { Text, View, StyleSheet, Button,SafeAreaView } from 'react-native';
+import { Text, View, StyleSheet, Button,SafeAreaView, Linking} from 'react-native';
 import { BarCodeScanner } from 'expo-barcode-scanner';
 
 import UserData from "../UserData.json";
@@ -18,24 +18,26 @@ export default function CodeCapture({navigation}) {
   }, []);
 
   const handleBarCodeScanned = ({ type, data }) => {
+
     setScanned(true);
     alert(`Scanned`);
-    if(isWhiteListed({type}))
+    
+    UserData.PreviousScans.push({"title": data, 
+    "id": UserData.PreviousScans.length.toString()}); // Assign ID  to every Scan to allow for deletion.
+
+    if(UserData.UPC_Codes.lastIndexOf(type) != -1)
     {
 
+      UserData.UPC_List.push(data)
+     
     }
-    else{
+    if(!(isWhiteListed({type})))
+    {
 
-      
+      alert('not in list....open in browser instead?');
+
     }
-    
-    
-    
-    
-   
-    UserData.PreviousScans.push({"title": data.toString(), "id": UserData.PreviousScans.length.toString()}); // Assign ID  to every Scan to allow for deletion.
-    
-    
+     
   };
 
   if (hasPermission === null) {
@@ -59,10 +61,7 @@ export default function CodeCapture({navigation}) {
       }
 
   }
-
  
-
-  
   return (
     <SafeAreaView
       style={{
@@ -78,12 +77,8 @@ export default function CodeCapture({navigation}) {
   
       {scanned && <Button title={'Tap to Scan Again'} onPress={() => setScanned(false)} />}
       {UserData.PreviousScans.length >= 1? <Button title = {'Previous Scans'} onPress = {()=> navigation.navigate('PreviousScans')}/>: <View></View>}
-      
-      
-      
-      
+          
     </SafeAreaView>
   );
 
  }
-
