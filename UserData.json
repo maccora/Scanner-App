@@ -1,5 +1,6 @@
 {
     "UPC_List":[],
+    "UPC_Codes":["org.gs1.UPC-E","org.gs1.EAN-13", "org.gs1.EAN-8"],
     "PreviousScans":[],
     "AvailabeCodes":[
         "org.iso.Aztec",
