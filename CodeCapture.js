@@ -5,7 +5,7 @@ import { Text, View, StyleSheet, Button,SafeAreaView, Linking} from 'react-nativ
 import { BarCodeScanner } from 'expo-barcode-scanner';
 import * as WebBrowser from 'expo-web-browser';
 
-import UserData from "../UserData.json";
+import UserData from "./UserData.json";
 
 
 export default function CodeCapture({navigation}) {
