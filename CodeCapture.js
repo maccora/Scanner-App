@@ -1,5 +1,6 @@
 import React, { useState, useEffect } from 'react';
 import ReactDOM from 'react-dom';
+
 import { Text, View, StyleSheet, Button,SafeAreaView, Linking} from 'react-native';
 import { BarCodeScanner } from 'expo-barcode-scanner';
 import * as WebBrowser from 'expo-web-browser';
@@ -10,7 +11,7 @@ import UserData from "../UserData.json";
 export default function CodeCapture({navigation}) {
   const [hasPermission, setHasPermission] = useState(null);
   const [scanned, setScanned] = useState(false);
-  //const [url, setUrl] = useState("https://www.google.com");
+  
 
 
   useEffect(() => {
@@ -19,6 +20,16 @@ export default function CodeCapture({navigation}) {
       setHasPermission(status === 'granted');
     })();
   }, []);
+
+  openBrowser = (data) => {
+    Linking.canOpenURL(data).then(supported => {
+      if (supported) {
+        Linking.openURL(data);
+      } else {
+        console.log("Don't know how to open URI: " + data);
+      }
+    });
+  }
 
   openWebPage = async (url) => {
     if (!url) throw 'MISSED_PARAMS';
@@ -31,7 +42,7 @@ export default function CodeCapture({navigation}) {
     }
   };
   const handleBarCodeScanned = ({ type, data }) => {
-    console.log(type);
+    console.log(data);
     setScanned(true);
     alert(`Scanned`);
     
@@ -44,7 +55,7 @@ export default function CodeCapture({navigation}) {
       UserData.UPC_List.push(data)
      
     }
-    if(isWhiteListed({type})&& data.search("alanaenabled") != -1)
+    if(isWhiteListed({type, data}))
     {
 
       openWebPage(data)
@@ -52,8 +63,8 @@ export default function CodeCapture({navigation}) {
     }
     else{
 
-      alert('not in list....open in browser instead?');
-
+      alert('The QR code is not Alana Enabled. Would you like to open it in your browser?');
+      openBrowser(data)
 
     }
      
@@ -67,10 +78,9 @@ export default function CodeCapture({navigation}) {
     return <Text>No access to camera</Text>;
   }
 
-  const isWhiteListed = ({type}) => {
+  const isWhiteListed = ({type, data}) => {
 
-      const exists = UserData.AvailabeCodes.lastIndexOf(type);
-      if(exists != -1)
+      if(UserData.AvailabeCodes.lastIndexOf(type) != -1 && data.search("alanaenabled") != -1)
       {
           return true
       }
