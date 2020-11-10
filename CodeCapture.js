@@ -64,6 +64,7 @@ export default function CodeCapture({navigation}) {
     else{
 
       alert('The QR code is not Alana Enabled. Would you like to open it in your browser?');
+      alert('Yes or No? ')
       openBrowser(data)
 
     }
@@ -110,6 +111,7 @@ export default function CodeCapture({navigation}) {
       
       
       
+
     </SafeAreaView>
   );
 
