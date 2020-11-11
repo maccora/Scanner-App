@@ -2,8 +2,8 @@ import React from 'react';
 import { NavigationContainer } from '@react-navigation/native';
 import { createStackNavigator } from '@react-navigation/stack';
 
-import CodeCapture from '../Screens/CodeCapture';
-import PreviousScans from '../Screens/PreviousScans';
+import CodeCapture from './Screens/CodeCapture';
+import PreviousScans from './Screens/PreviousScans';
 
 const Stack = createStackNavigator();
 
