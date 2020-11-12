@@ -1,7 +1,9 @@
 import React, {useState} from 'react';
 import {SafeAreaView,Text, View, FlatList, TouchableOpacity, StyleSheet} from 'react-native';
 
-import OpenURLButton from "./Components/OpenURLButton.js";
+
+//HistorySlider will replace this component.
+//import OpenURLButton from "./Components/OpenURLButton.js";
 import UserData from "./UserData.json";
 
 export default function PreviousScans({navigation}){
