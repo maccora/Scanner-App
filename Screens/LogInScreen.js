@@ -2,7 +2,7 @@ import React from 'react';
 import {View, StyleSheet} from 'react-native';
 import { bindActionCreators } from 'redux';
 import { connect } from 'react-redux';
-import { addUser, isUser} from '../Components/Redux/AlanaDataActions';
+import { addUser } from '../Components/Redux/AlanaDataActions';
 
 import SocialLogin from '../Components/SocialLogins.js';
 import RegistrationForm from '../Components/RegistrationForm.js';
