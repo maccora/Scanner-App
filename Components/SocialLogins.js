@@ -40,14 +40,14 @@ export default function SocialLogin({navigation}){
              {
                 alert("normal")
                 
-                navigation.navigate("TabNavigator",{screen: 'ProfileScreen', params:{userID: data.user.email}})
+                navigation.navigate("TabNavigator")
               
              }
              else if(data.type == 'success' && !isUser(data.user.email, AlanaData.users).exists){
                  AlanaData.users.push({"id": AlanaData.users.length+1, "token":data.token, "name": data.name, "email": data.user.email, "userID":data.email,"password": null})
                  
                 
-                 navigation.navigate("TabNavigator",{screen: 'ProfileScreen', params:{userID: data.user.email}})
+                 navigation.navigate("TabNavigator")
                  alert("pushed")
              }
              else{
@@ -80,17 +80,17 @@ export default function SocialLogin({navigation}){
           } catch ({ message }) {
             alert(`Facebook Login Error: ${message}`);
           }  
-         4
+         
           if (data.type === 'success' && isUser(user.email, AlanaData.users).exists) {
             
-            navigation.navigate("TabNavigator",{screen: 'QRCaptureScreen', params:{userID: data.user.email}})
+            navigation.navigate("TabNavigator")
             alert('normal')
           }
           else if(data.type === 'success' && !isUser(user.email, AlanaData.users).exists){
 
             AlanaData.users.push({"id": AlanaData.users.length+1, "token":user.token, "name": user.name, "email": user.email, "userID": user.email,"password": null})
            
-            navigation.navigate("TabNavigator",{screen: 'ProfileScreen', params:{userID: data.user.email}})
+            navigation.navigate("TabNavigator")
             alert("pushed")
 
           }
