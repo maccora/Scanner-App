@@ -24,3 +24,4 @@ const mapStateToProps = (state) => {
     }, dispatch)
   );
   export default connect(mapStateToProps,mapDispatchToProps)(HolderBScreen);
+ 
