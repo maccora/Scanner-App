@@ -1,7 +1,1 @@
-# Scanner-App
-# Scanner-App
-# Scanner-App
-# Scanner-App
-# Scanner-App
-# Scanner-App
-# Scanner-App
+Scanner App that utilizes React-Native Exposition framework.
