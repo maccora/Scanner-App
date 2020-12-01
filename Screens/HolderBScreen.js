@@ -2,7 +2,7 @@ import React from 'react';
 import {View, Text, Button} from 'react-native';
 import { bindActionCreators } from 'redux';
 import { connect } from 'react-redux';
-import { addUser} from '../Components/Redux/UserActions';
+import { addUser} from '../Components/Redux/AlanaDataActions';
 import AlanaData from '../AlanaData.json'
  
 //Example demonstrating usage of defined function in UserActions.
