@@ -1,5 +1,4 @@
 import React from 'react';
-import {View, Text, Button, Alert} from 'react-native';
 import StackNavigator from './Navigators/StackNavigator';
 import { Provider } from 'react-redux';
 import { createStore } from 'redux';
