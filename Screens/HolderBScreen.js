@@ -5,7 +5,7 @@ import { connect } from 'react-redux';
 import { addUser} from '../Components/Redux/UserActions';
 import AlanaData from '../AlanaData.json'
  
-//Example demonstrating usage of defined function in userActions.
+//Example demonstrating usage of defined function in UserActions.
 
 function HolderBScreen(props){
 
