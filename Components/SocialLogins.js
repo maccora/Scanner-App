@@ -1,14 +1,16 @@
-import React, { useEffect } from 'react';
+import React from 'react';
 import {View, TouchableHighlight, Image, Text, StyleSheet} from 'react-native';
 import * as Facebook from 'expo-facebook';
 import * as Google from 'expo-google-app-auth';
 
-import AlanaData from '../AlanaData.json'
 
-export default function SocialLogin({navigation}){
+import AlanaData from '../AlanaData.json'
+import AlanaDataReducer from './Redux/AlanaDataReducer';
+
+export default function SocialLogin({navigation, reducer, reducerAction}){
 
     function isUser(email,arrayUsers){
-
+        
         for(let i = 0; i <arrayUsers.length;i++ )
         {
             
@@ -35,17 +37,19 @@ export default function SocialLogin({navigation}){
             });
          
              data=  { type, token: accessToken, user};
-           
-             if(data.type == 'success' && isUser(data.user.email, AlanaData.users).exists)
+             
+             
+             if(data.type == 'success' && isUser(data.user.email, reducer.userData).exists)
              {
                 alert("normal")
                 
                 navigation.navigate("TabNavigator")
               
              }
-             else if(data.type == 'success' && !isUser(data.user.email, AlanaData.users).exists){
-                 AlanaData.users.push({"id": AlanaData.users.length+1, "token":data.token, "name": data.name, "email": data.user.email, "userID":data.email,"password": null})
-                 
+             
+             else if(data.type == 'success' && !isUser(data.user.email, reducer.userData).exists){
+                 reducerAction({"id": reducer.userData.length+1, "token":data.token, "name": data.name, "email": data.user.email, "userID":data.email,"password": null})
+               
                 
                  navigation.navigate("TabNavigator")
                  alert("pushed")
@@ -59,7 +63,6 @@ export default function SocialLogin({navigation}){
             return { error: e };
           }
       }
-        
 
       async function handleFaceBookLogIn() {
         try {
@@ -81,14 +84,14 @@ export default function SocialLogin({navigation}){
             alert(`Facebook Login Error: ${message}`);
           }  
          
-          if (data.type === 'success' && isUser(user.email, AlanaData.users).exists) {
+          if (data.type === 'success' && isUser(user.email, reducer.userData).exists) {
             
             navigation.navigate("TabNavigator")
             alert('normal')
           }
-          else if(data.type === 'success' && !isUser(user.email, AlanaData.users).exists){
+          else if(data.type === 'success' && !isUser(user.email, reducer.userData).exists){
 
-            AlanaData.users.push({"id": AlanaData.users.length+1, "token":user.token, "name": user.name, "email": user.email, "userID": user.email,"password": null})
+            reducerAction({"id": reducer.userData.length+1, "token":user.token, "name": user.name, "email": user.email, "userID": user.email,"password": null})
            
             navigation.navigate("TabNavigator")
             alert("pushed")
@@ -98,7 +101,9 @@ export default function SocialLogin({navigation}){
               alert("failed or cancelled")
           }
        
-      }
+      } 
+
+      
     return(
         
         <View style = {{flex:1, flexDirection: 'row', alignItems: 'center', justifyContent: 'center',}}>
@@ -106,7 +111,7 @@ export default function SocialLogin({navigation}){
             <TouchableHighlight style = {{margin: 5}}onPress = {handleGoogleLogIn}>
                 <Image source = {require('../assets/favicon.png')}/>
             </TouchableHighlight>
-
+            
             <TouchableHighlight  style = {{margin: 5}} onPress = {handleFaceBookLogIn}>
                 <Image source = {require('../assets/favicon.png')}/>
             </TouchableHighlight>
@@ -115,3 +120,4 @@ export default function SocialLogin({navigation}){
     )
 
 }
+
