@@ -3,12 +3,17 @@ import {View, Text, Button} from 'react-native';
 import { bindActionCreators } from 'redux';
 import { connect } from 'react-redux';
 import { addUser} from '../Components/Redux/UserActions';
- function HolderBScreen(props){
+import AlanaData from '../AlanaData.json'
+ 
+//Example demonstrating usage of defined function in userActions.
+
+function HolderBScreen(props){
 
     return(
         <View style = {{flex:1, justifyContent: 'center', alignItems: 'center'}}>
-            <Button title = "add data" onPress={()=>{props.addUser({"name": "Timothy Layne", "email":"timothylayne93@gmail.com"})}}/>
-            {props.users.userData}
+            {console.log("FIRST:",AlanaData.users)}
+            <Button title = "add data" onPress={()=>{props.addUser({"name": "Timothy Layne", "email":"Test"})}}/>
+            {console.log("FINAL:",AlanaData.users)}
         </View>
     )
 
@@ -24,4 +29,3 @@ const mapStateToProps = (state) => {
     }, dispatch)
   );
   export default connect(mapStateToProps,mapDispatchToProps)(HolderBScreen);
- 
