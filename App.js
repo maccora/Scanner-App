@@ -1,11 +1,11 @@
-import React from 'react';
+import React, {useEffect, useState} from 'react';
 import StackNavigator from './Navigators/StackNavigator';
 import { Provider } from 'react-redux';
 import { createStore } from 'redux';
-import UserReducer from './Components/Redux/UserReducer.js';
+import AlanaDataReducer from './Components/Redux/AlanaDataReducer.js';
 
 
-const store = createStore(UserReducer);
+const store = createStore(AlanaDataReducer);
 
 export default function App(){
  
