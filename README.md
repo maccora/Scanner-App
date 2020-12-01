@@ -1,1 +1,1 @@
-App that utilizes React-Native Exposition framework.
+App that utilizes React Native Exposition framework.
