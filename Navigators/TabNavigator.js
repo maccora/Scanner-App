@@ -1,29 +1,28 @@
 import React from 'react';
-import {View} from 'react-native';
-import { NavigationContainer } from '@react-navigation/native';
+import {View, TouchableOpacity,Text, StyleSheet} from 'react-native';
 import { createBottomTabNavigator } from '@react-navigation/bottom-tabs';
 
+import CustomTabBar from '../Components/CustomTabBar.js';
 import HistoryScreen from '../Screens/HistoryScreen.js';
-import QRCaptureScreen from '../Screens/QRCaptureScreen.js';
+import CodeCaptureScreen from '../Screens/CodeCaptureScreen.js';
 import ProfileScreen from '../Screens/ProfileScreen';
-import HolderBScreen from '../Screens/HolderBScreen';
-import isUser from '../Components/SocialLogins'
-
-const Tab = createBottomTabNavigator();
+import PlaceHolderScreen from '../Screens/PlaceHolderScreen';
 
 export default function TabNavigator() {
-  return (
-    
-     
-      <Tab.Navigator >
 
-        <Tab.Screen name="QRCapture" component={QRCaptureScreen}}/>
+
+  
+  const Tab = createBottomTabNavigator();
+  return (
+      
+      <Tab.Navigator tabBar = {props=> <CustomTabBar {...props}/>}>
+
+        <Tab.Screen name="CodeCapture" component={CodeCaptureScreen} initialParams = {{action: ''}}/>
         <Tab.Screen name="History" component={HistoryScreen}/>
         <Tab.Screen name="ProfileScreen" component={ProfileScreen}/>
-        <Tab.Screen name="HolderBScreen" component={HolderBScreen}/>
+        <Tab.Screen name="PlaceHolderScreen" component={PlaceHolderScreen}/>
       
       </Tab.Navigator>
       
-  
   );
 }
