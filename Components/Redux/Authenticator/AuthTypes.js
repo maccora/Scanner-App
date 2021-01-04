@@ -1,0 +1,1 @@
+export const VALIDATE_USER = 'VALIDATE_USER';
