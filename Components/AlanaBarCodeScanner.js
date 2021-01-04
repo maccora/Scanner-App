@@ -1,36 +1,40 @@
 import React, {useState, useEffect} from 'react';
-import {Linking, View, StyleSheet,Text, Button , Modal} from 'react-native';
-import { BarCodeScanner} from 'expo-barcode-scanner';
+import {View,SafeAreaView, StyleSheet,Text } from 'react-native';
+import {Camera} from 'expo-camera'
 import * as WebBrowser from 'expo-web-browser';
+import { WebView } from 'react-native-webview';
+import AlanaData from '../AlanaData.json';
+import ScannerModal from './ScannerModal';
 
-import AlanaData from "../AlanaData.json";
-import WebPermisModal from '../Components/WebPermisModal.js'
+export default function AlanaBarCodeScanner({reducerActions,reducers,props}){
 
-
-export default function AlanaBarCodeScanner(){
     const [hasPermission, setHasPermission] = useState(null);
-    const [scanned, setScanned] = useState(false);
-    const [isVisible, setVisible] = useState(true);
-    
+    const [scannerReady, setScanner] = useState(false) 
+    const [scan, setScan] = useState({"type": "null", "data": "null", "isWhitelisted":false})
+
     useEffect(() => {
-        (async () => {
-          const { status } = await BarCodeScanner.requestPermissionsAsync();
+      (async () => {
+        const { status } = await Camera.requestPermissionsAsync();
           setHasPermission(status === 'granted');
         })();
       }, []);
-    
-    openBrowser = (data) => {
-        Linking.canOpenURL(data).then(supported => {
-            if (supported) {
-                Linking.openURL(data);
-            } else {
-                console.log("Don't know how to open URI: " + data);
-              
-            }
-        });
-      }
+   
+    useEffect(()=>{
 
-    openWebPage = async (url) => {
+      // Param action of "snap" alerts screen to take a picture
+      if(props.route.params["action"] === "snap")
+        {
+            props.navigation.setParams({
+                action: ""
+              })
+            setScanner(true)
+            resetScan()
+            
+        }
+
+      },[props.route.params["action"]])
+
+    const openWebPage = async (url) => {
         if (!url) throw 'MISSED_PARAMS';
     
         try {
@@ -39,47 +43,60 @@ export default function AlanaBarCodeScanner(){
         catch (e) {
             console.log('Error', e);
         }
-      };
+    }
 
-    const handleBarCodeScanned = ({data,type}) =>{
+    const handleBarCodeScanned = (type,data) =>{
+        //cameraRef.pausePreview()
+        setScanner(false)
         
-        alert('Snap')
-        setScanned(true)
+        const isScanWhiteListed = isCodeWhiteListed({type,data})
         
-        UserData.PreviousScans.push({"title": data, 
-        "id": UserData.PreviousScans.length.toString()}); // Assign ID  to every Scan to allow for deletion.
-        const scan = isWhiteListed(type, data)
-        if(UserData.UPC_Codes.lastIndexOf(type) != -1)
+        if(isScanWhiteListed.type !== "failure")
         {
-    
-          UserData.UPC_List.push(data)
-         
-        }
-        
-        if(scan)
-        {
-    
-          openWebPage(data)
-    
+  
+          reducerActions.createScan(data)
+          setScan({type: type, data: data, isWhitelisted: isScanWhiteListed.result})
+          if(!scan.isWhitelisted)
+
+          {
+              modalRef.toggleVisible()
+          }
+          
         }
         else{
-                
+        
+            alert('Data was null')
         }
-      
-         
-      };
+   
+    }
+  
+    function resetScan(){
+      setScan({"type": "null", "data":"null", "isWhitelisted":false})
+    }
+
+    function resetCamera()
+    {
+      modalRef.toggleVisible()
+      //cameraRef.resumePreview()
+    }
     
-      function isWhiteListed(type, data){
-        
-        
-        if(UserData.AvailabeCodes.lastIndexOf(type) != -1 && data.search("alanaenabled") != -1)
+    function isCodeWhiteListed({type, data}){
+       
+        //verify that the code type of the scan is inn the list of approved scan types and contains "alanaenabled". Currently
+        //that is the only way we are using to verify the QR code.
+
+        if(data === "null")
+        {
+          return {type: 'failure', result: "Data was null"}
+        }
+        if(AlanaData.approved_codes.lastIndexOf(type) != -1 && data.search("alanaenabled") != -1)
         {
            
-            return true
+            return {type: "success", result: true}
         }
         else{
-         
-          return false
+          
+          return {type: "success", result: false}
           
         }
   
@@ -94,22 +111,48 @@ export default function AlanaBarCodeScanner(){
     }
 
 return(
-    <View style = {{flex:1, backgroundColor: 'white', justifyContent: 'flex-end'}}>
-       
+  
+  // When the user presses the scan button the scanner will await to scan a code, upon scan the 
+  // scan information is handled. If the scanner is not ready, undefined is returned/wait for user to be ready. 
+  // If the scan is whitelisted, it will be opened in app. Otherwise, it will open out of the app.
+    <SafeAreaView style = {{flex:1}}>
+      {!scan.isWhitelisted?
+      <Camera 
+        ref = {ref=> {cameraRef = ref}} 
+        style = {StyleSheet.absoluteFill} 
+        onBarCodeScanned = {scannerReady? (scan)=>handleBarCodeScanned(scan.type,scan.data): undefined}>
 
-        <BarCodeScanner
-          onBarCodeScanned = {scanned ? undefined :handleBarCodeScanned}
-          style = {StyleSheet.absoluteFillObject}
-        />
-        
-        
-        
-        
-        {scanned && <Button title = "Reset Scanner" onPress = {()=>{setScanned(false)}}/>}
+        <View style = {styles.modal}>
+          <ScannerModal 
+            ref = {ref=>{modalRef = ref}} 
+            onPressYes= {()=>{openWebPage(scan.data)}}
+            onPressNo = {()=>{resetCamera()}}/>
+        </View>
 
-    </View>
-
+      </Camera>:
+    
+      <WebView style = {styles.web} source = {{uri: scan.data}}/>}
+      
+    </SafeAreaView>
 
     )
-
 }
+
+const styles = StyleSheet.create({
+
+    web:{
+
+      alignSelf: 'stretch',
+      flex:1,
+
+    },
+    modal:{
+
+      flex:1,
+      justifyContent:'center',
+      alignItems:'center',
+
+    },
+
+})
+
