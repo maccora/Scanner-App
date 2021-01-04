@@ -1,9 +1,8 @@
 {
-    "UPC_List":[],
-    "ProductList":[],
-    "UPC_Codes":["org.gs1.UPC-E","org.gs1.EAN-13", "org.gs1.EAN-8"],
-    "PreviousScans":[],
-    "AvailabeCodes":[
+    "upc_list":[],
+    "product_list":[],
+    "upc_codes":["org.gs1.UPC-E","org.gs1.EAN-13", "org.gs1.EAN-8"],
+    "approved_codes":[
         "org.iso.Aztec",
         "org.iso.Code128",
         "org.iso.Code39",     
@@ -15,7 +14,7 @@
         "org.iso.PDF417",
         "org.iso.QRCode",
         "org.gs1.UPC-E"],
-    "users":[  
-    ]
-      
+    "user_data":[  
+    ],
+          
 }
