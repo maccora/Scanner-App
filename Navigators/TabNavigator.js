@@ -18,8 +18,8 @@ export default function TabNavigator() {
       <Tab.Navigator tabBar = {props=> <CustomTabBar {...props}/>}>
 
         <Tab.Screen name="CodeCapture" component={CodeCaptureScreen} initialParams = {{action: ''}}/>
-        <Tab.Screen name="History" component={HistoryScreen}/>
         <Tab.Screen name="ProfileScreen" component={ProfileScreen}/>
+        <Tab.Screen name="History" component={HistoryScreen}/>
         <Tab.Screen name="PlaceHolderScreen" component={PlaceHolderScreen}/>
       
       </Tab.Navigator>
